@@ -29,13 +29,24 @@ class SQLiteDataManager(DataManagerInterface):
             self.db.create_all()
 
 
+    def get_user(self, user_id):
+        '''
+        Get a user_id as argument
+        Returns a user by user_id
+        '''
+        user_in_db = User.query.get(user_id)
+        if not user_in_db:
+            raise ValueError("User didnt exists")
+        return user_in_db
+    
+    
     def get_all_users(self):
         '''
         Returns all the user date which is stored in db.
         '''
         users = User.query.all()
-        users_name_list = [user.name for user in users]
-        return users_name_list
+        #users_name_list = [user.name for user in users]
+        return users
 
     def get_user_movies(user_id):
         '''
@@ -52,20 +63,26 @@ class SQLiteDataManager(DataManagerInterface):
         else:
             raise ValueError("Invalid User!")
 
-    def add_user(self, user):
+    def add_user(self, user_data):
         '''
         Get a user insance as argument and create a new record.
+        Returns user object if record succesfull created.
         '''
-        self.db.session.add(user)
+        new_user = User(**user_data)
+        self.db.session.add(new_user)
         self.db.session.commit()
+        return new_user
 
 
-    def add_movie(self, movie):
+    def add_movie(self, movie_data):
         '''
         Get a movie insance as argument and create a new record.
+        Returns movie object if record succesfull created.
         '''
-        self.db.session.add(movie)
+        new_movie = Movie(**movie_data)
+        self.db.session.add(new_movie)
         self.db.session.commit()
+        return new_movie
 
     def add_movie_to_user(self, user_id, movie_id):
         '''

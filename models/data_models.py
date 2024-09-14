@@ -6,8 +6,8 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String)
-
-    movies = db.relationship('Movie', secondary=user_movie_association, backref='users')
+    movies = db.relationship('Movie', backref="user", lazy=True)
+    #movies = db.relationship('Movie', secondary=user_movie_association, backref='users')
 
 
 class Movie(db.Model):
@@ -17,3 +17,4 @@ class Movie(db.Model):
     director = db.Column(db.String)
     year = db.Column(db.String)
     rating = db.Column(db.Float)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
