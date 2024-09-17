@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container my-4">
+    <h1 class="mb-4 text-center">Update Movie</h1>
+    <form method="Post" action="{{ url_for('update_movie', user_id=movie.user.id, movie_id=movie.id) }}">
+        <div class="form-group mb-3">
+            <label for="name">Movie Name</label>
+            <input type="text" class="form-control bg-dark text-light border-light" id="name" name="name" required value="{{ movie.name }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="director">Director</label>
+            <input type="text" class="form-control bg-dark text-light border-light" id="director" name="director" required value="{{ movie.director }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="year">Year</label>
+            <input type="number" class="form-control bg-dark text-light border-light" id="year" name="year" required value="{{ movie.year }}">
+        </div>
+        <div class="form-group mb-3">
+            <label for="rating">Rating</label>
+            <input type="number" class="form-control bg-dark text-light border-light" id="rating" name="rating" required value="{{ movie.rating }}" min="0" max="10">
+        </div>
+        <button type="submit" class="btn btn-outline-light">Update Movie</button>
+    </form>
+</div>
+{% endblock %}
+
+

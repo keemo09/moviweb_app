@@ -39,6 +39,17 @@ class SQLiteDataManager(DataManagerInterface):
             raise ValueError("User didnt exists")
         return user_in_db
     
+    def get_movie(self, movie_id):
+        '''
+        Get a movie_id as argument
+        Returns a movie by movie_id
+        '''
+        movie_in_db = Movie.query.get(movie_id)
+        if not movie_in_db:
+            raise ValueError("Movie didnt exists!")
+        return movie_in_db
+
+    
     
     def get_all_users(self):
         '''
@@ -48,7 +59,7 @@ class SQLiteDataManager(DataManagerInterface):
         #users_name_list = [user.name for user in users]
         return users
 
-    def get_user_movies(user_id):
+    def get_user_movies(self, user_id):
         '''
         Get user_id as a parameter and fetches users movies.
         Returns all the movies from a specific user.
@@ -57,8 +68,8 @@ class SQLiteDataManager(DataManagerInterface):
         
         if user_in_db:
             user_movies = user_in_db.movies
-            user_movies_title_list = [movie.title for movie in user_movies]
-            return user_movies_title_list
+            #user_movies_title_list = [movie.title for movie in user_movies]
+            return user_movies
         
         else:
             raise ValueError("Invalid User!")
@@ -110,25 +121,25 @@ class SQLiteDataManager(DataManagerInterface):
         
         return True
 
-    def update_movie(self, movie):
+    def update_movie(self, movie_id, movie_data):
         '''
         Get a movie insance as argument and updates a existing movie.
         '''
         # Get a movie based on the id
-        movie_in_db = Movie.query.get(movie.id)
+        movie_in_db = Movie.query.get(movie_id)
 
         # If movie_id didnt match to a movie in db raises error.
         if movie_in_db:
 
             # Checks which fields a given and update it.
-            if "name" in movie:
-                movie_in_db.name = movie.name
-            if "director" in movie:
-                movie_in_db.director = movie.director
-            if "year" in movie:
-                movie_in_db.year = movie.year
-            if "rating" in movie:
-                movie_in_db.rating = movie.rating
+            if "name" in movie_data:
+                movie_in_db.name = movie_data["name"]
+            if "director" in movie_data:
+                movie_in_db.director = movie_data["director"]
+            if "year" in movie_data:
+                movie_in_db.year = movie_data["year"]
+            if "rating" in movie_data:
+                movie_in_db.rating = movie_data["rating"]
             
             # Commit changes to db
             self.db.session.commit()
